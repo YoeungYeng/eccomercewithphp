@@ -1,39 +1,54 @@
 <?php 
 
+    $id = $_GET['p'];
     require_once "./config.php";
-    $p = $_GET['p'];
+   
+    $select = "SELECT *FROM tbl_brand WHERE brand_id = '$id'";
+    $result = $conn->query($select);
+
+    $row = $result->fetch_assoc();
+    $brand_name = $row['brand_name'];
+    $im = htmlspecialchars($row['image']);
+    $img = "../admin/action/" . $im;
+    $des = $row['des'];
+    $status = $row['status'];
 ?>
 
 
 
 
 
-<div class=" p-3 w-full">
-    <div class="card shadow-lg w-full" >
-        <div class="card-header bg-primary text-white" >
+<div class=" p-3">
+    <div class="card shadow-lg" style="margin-top: 120px;">
+        <div class="card-header bg-primary text-white" style="margin-top: -30px;">
             <h4 class="mb-0">Brand Form</h4>
         </div>
         <div class="card-body">
-            <form action="action/save_brand.php" method="post" enctype="multipart/form-data">
+            <form action="action/edit_brand.php" method="post" enctype="multipart/form-data">
                 <!-- Brand Name -->
                 <div class="mb-3">
                     <label for="brandName" class="form-label">Brand Name</label>
-                    <input type="text" class="form-control" name="txt-name" id="brandName"
+                    <input type="hidden" name="id" value="<?php echo $row['brand_id'] ?>">
+                    <input type="text" value="<?php echo $brand_name ?>" class="form-control" name="txt-name" id="brandName"
                         placeholder="Enter brand name" required>
                 </div>
 
                 <!-- Brand Logo Upload -->
-                <div class="mb-3 no-image"
-                    style="padding: 12px 14px; width: 150px; height: 150px; cursor: pointer;  border-radius: 5px 7px; background: url('assets/images/no-image-icon-23485.png'); background-size: cover;">
-                    <!-- <label for="image" class="form-label">Product Image</label> -->
-                    <input type="file" style="width: 100%; height: 100px; opacity: 0" class="form-control"
-                        accept="image/*" id="image" name="image"  required>
+                <div class="mb-3 no-image">
+                    <input type="hidden" name="id" value="<?= $id ?>">
+                    <!-- image -->
+                    <input type="file" id="image" name="image"
+                        style="opacity: 0; position: absolute; width: 150px; height: 150px; cursor: pointer;"
+                        class="form-control" accept="image/*">
+
+                    <img src="<?= $img ?>" id="imagePreview" alt="image"
+                        style="height: 150px; padding: 12px 16px; border-radius: 12px 17px; object-fit: cover; width: 150px; border: 1px solid #000; cursor: pointer;">
                 </div>
                 <!-- Brand Description -->
                 <div class="mb-3">
                     <label for="brandDescription" class="form-label">Description</label>
                     <textarea class="form-control" name="txt-des" id="brandDescription" rows="3"
-                        placeholder="Enter brand description"></textarea>
+                        placeholder="Enter brand description"><?php echo $des ?></textarea>
                 </div>
 
                 <!-- Status Dropdown -->
@@ -44,7 +59,7 @@
                         
                         <option value="inactive">Inactive</option>
                     </select> -->
-                    <input type="text" name="txt-status" id="">
+                    <input type="text" value="<?php $status ?>" name="txt-status" id="">
                 </div>
 
                 <!-- Submit and Reset Buttons -->
@@ -115,15 +130,28 @@
 
 <!-- script for change image -->
 <script>
-    document.getElementById("image").addEventListener("change", function (event) {
-        const file = event.target.files[0];
+    document.addEventListener("DOMContentLoaded", function () {
+        const imageInput = document.getElementById("image");
+        const imagePreview = document.getElementById("imagePreview");
 
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                document.querySelector(".no-image").style.backgroundImage = `url('${e.target.result}')`;
-            };
-            reader.readAsDataURL(file);
-        }
+        // When clicking on the preview, trigger file input
+        imagePreview.addEventListener("click", function () {
+            imageInput.click();
+        });
+
+        // Handle file input change
+        imageInput.addEventListener("change", function () {
+            const file = imageInput.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    imagePreview.src = e.target.result;
+                };
+
+                reader.readAsDataURL(file);
+            }
+        });
     });
 </script>

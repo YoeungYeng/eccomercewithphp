@@ -1,3 +1,6 @@
+<?php 
+  // $p = $_GET['p'];
+?>
 <!-- Sidebar Start -->
 <aside class="left-sidebar">
   <!-- Sidebar scroll-->

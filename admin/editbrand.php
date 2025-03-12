@@ -23,7 +23,7 @@ require_once "config.php";
         <!--  Header End -->
         <div class="container-fluid">
           <!-- rows -->
-          <?php require_once "include/brandInclude.php"; ?>
+          <?php require_once "include/editbrandInclude.php"; ?>
         </div>
       </div>
     </div>
@@ -35,6 +35,4 @@ require_once "config.php";
     require_once "include/foot.php"; 
 ?>
 </html>
-
-
 

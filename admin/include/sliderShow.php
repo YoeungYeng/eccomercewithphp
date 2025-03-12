@@ -15,7 +15,8 @@ if (!$result) {
             <div class="row">
                 <h2 class="mb-4">Manage Slideshow</h2>
                 <hr>
-                <div class="col-md-12 mt-4 no-image" style="width: 150px; height: 150px; cursor: pointer; border: 1px solid #000; border-radius: 5px 7px; padding: 12px 14px; background: url('assets/images/no-image-icon-23485.png'); background-size: cover;">
+                <div class="col-md-12 mt-4 no-image"
+                    style="width: 150px; height: 150px; cursor: pointer; border: 1px solid #000; border-radius: 5px 7px; padding: 12px 14px; background: url('assets/images/no-image-icon-23485.png'); background-size: cover;">
                     <!-- <label>Upload Image</label> -->
                     <input type="file" name="image" style="opacity: 0;" id="txt-image" class="form-control" required>
                 </div>
@@ -32,11 +33,11 @@ if (!$result) {
                     <input type="text" name="description" class="form-control" required>
                 </div>
                 <div class="col-md-12 mt-4 d-flex align-items-end">
-                    <button type="submit" class="btn btn-primary">Add Slide</button>
+                    <button type="submit" class="btn btn-primary" id="addSlideBtn">Add Slide</button>
                 </div>
             </div>
         </form>
-        
+
         <!-- table show image -->
         <table class="table table-bordered">
             <thead>
@@ -70,9 +71,10 @@ if (!$result) {
                                 <p> <?= $des; ?> </p>
                             </td>
                             <td>
-                                <a href="edit_slideshow.php?p=<?php echo $row['id']; ?>"><button class="btn btn-primary"> Edit </button></a>
+                                <a href="edit_slideshow.php?p=<?php echo $row['id']; ?>"><button class="btn btn-primary"> Edit
+                                    </button></a>
                                 <a href="action/delelet_slide.php?p=<?php echo $row['id']; ?>">
-                                    <button class="btn btn-danger"> Delete </button>
+                                    <button class="btn btn-danger" id="btn-delete"> Delete </button>
                                 </a>
                             </td>
                         </tr>
@@ -88,15 +90,27 @@ if (!$result) {
 </div>
 
 <script>
-document.getElementById("txt-image").addEventListener("change", function(event) {
-    const file = event.target.files[0];
+    document.getElementById("txt-image").addEventListener("change", function (event) {
+        const file = event.target.files[0];
 
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            document.querySelector(".no-image").style.backgroundImage = `url('${e.target.result}')`;
-        };
-        reader.readAsDataURL(file);
-    }
-});
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                document.querySelector(".no-image").style.backgroundImage = `url('${e.target.result}')`;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
+
+<script>
+    document.getElementById("addSlideBtn").addEventListener("click", function() {
+        alert("Add Slide succeeded!");
+    });
+</script>
+
+<script>
+    document.getElementById("#btn-delete").addEventListener("click", function(){
+        alert("Delect slide succeeded💔!")
+    })
 </script>
